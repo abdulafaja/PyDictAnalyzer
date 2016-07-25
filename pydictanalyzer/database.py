@@ -21,10 +21,6 @@ class Database(object):
         Base.metadata.create_all(self._engine)
         self._session = sessionmaker(bind=self._engine)()
 
-    # @property
-    # def session(self):
-    #     return self._session
-
     def _commit(self):
         try:
             self._session.commit()

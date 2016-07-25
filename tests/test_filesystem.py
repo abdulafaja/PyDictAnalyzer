@@ -17,7 +17,7 @@ class FileSystemTestCase(unittest.TestCase):
         self.assertRaises(FileSystemException, FileSystem.get_files_list_in_dir_recursive, self.not_dir_file_path)
 
         files_list = FileSystem.get_files_list_in_dir_recursive(self.not_recursive_dir_path)
-        self.assertListLengthEqual(files_list, 3)
+        self.assertListLengthEqual(files_list, 4)
 
         files_list = FileSystem.get_files_list_in_dir_recursive(self.recursive_dir_path)
-        self.assertListLengthEqual(files_list, 5)
+        self.assertListLengthEqual(files_list, 6)

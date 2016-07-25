@@ -5,7 +5,7 @@ from pydictanalyzer.exceptions import FileSystemException
 
 class FileSystem(object):
     @classmethod
-    def get_files_list_in_dir_recursive(cls, dir_path):
+    def get_files_list_in_dir_recursive(cls, dir_path, append_dir_path=True):
         """
         Get the list of files in directory.
         The path should be a directory.
@@ -20,7 +20,10 @@ class FileSystem(object):
             dir_path = os.path.abspath(dir_path)
         if not cls._is_dir(dir_path):
             raise FileSystemException("Not a dir path")
-        files_list = []
+        if append_dir_path:
+            files_list = [dir_path]
+        else:
+            files_list = []
         for root, dirs, files in os.walk(dir_path):
             dir_files = [os.path.join(root, path) for path in dirs + files]
             files_list += dir_files
