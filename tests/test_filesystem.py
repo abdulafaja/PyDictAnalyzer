@@ -1,4 +1,5 @@
 import unittest
+
 from pydictanalyzer.exceptions import FileSystemException
 from pydictanalyzer.filesystem import FileSystem
 

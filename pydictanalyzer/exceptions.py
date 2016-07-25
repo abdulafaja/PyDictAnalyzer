@@ -1,11 +1,18 @@
-class PyAnalyzerException(Exception):
+class PyDictAnalyzerException(Exception):
     """
     Base PyAnalyzer exception class
     """
     pass
 
 
-class FileSystemException(PyAnalyzerException):
+class DatabaseException(PyDictAnalyzerException):
+    """
+    Database exception
+    """
+    pass
+
+
+class FileSystemException(PyDictAnalyzerException):
     """
     Exception raised by file system class.
     """
