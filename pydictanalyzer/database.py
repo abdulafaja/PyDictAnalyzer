@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy.exc import IntegrityError, NoSuchModuleError
+from sqlalchemy.exc import IntegrityError, NoSuchModuleError, OperationalError
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.exc import FlushError
 
@@ -15,10 +15,10 @@ class Database(object):
     def __init__(self, connection_string):
         try:
             self._engine = create_engine(connection_string)
-        except NoSuchModuleError as e:
+            Base.metadata.create_all(self._engine)
+        except (OperationalError, NoSuchModuleError) as e:
             PyDictAnalyzerLogger.exception(e)
             raise DatabaseException(e)
-        Base.metadata.create_all(self._engine)
         self._session = sessionmaker(bind=self._engine)()
 
     def _commit(self):
@@ -54,3 +54,7 @@ class Database(object):
 
     def get_checksum(self, object):
         return self._session.query(Checksum).get(object.id)
+
+    @staticmethod
+    def get_connection_string(database_name):
+        return "sqlite:///{}".format(database_name)

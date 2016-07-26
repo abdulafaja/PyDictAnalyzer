@@ -1,5 +1,4 @@
 import hashlib
-import os
 
 from pydictanalyzer.filesystem import FileSystem
 
@@ -17,7 +16,7 @@ class Object(object):
 
     @property
     def size(self):
-        return os.stat(self.path).st_size
+        return FileSystem.get_size(self.path)
 
     @property
     def path(self):
@@ -38,6 +37,13 @@ class Directory(Object):
     @property
     def nbr_of_elements(self):
         return len(FileSystem.get_files_list_in_dir_recursive(self.path, append_dir_path=False))
+
+    @property
+    def size(self):
+        size = 0
+        for file in FileSystem.get_files_list_in_dir_recursive(self.path, append_dir_path=False):
+            size += FileSystem.get_size(file)
+        return size
 
     def add_to_db(self, database):
         object = super(Directory, self).add_to_db(database)
