@@ -31,7 +31,6 @@ class Database(object):
     def create_object(self, path, type, size):
         obj = Object(path=path, type=type, size=size)
         self._session.add(obj)
-        self._commit()
         return obj
 
     def get_object_by_path(self, path):
@@ -40,7 +39,6 @@ class Database(object):
     def create_cardinality(self, object, nbr_of_elements):
         cardinality = Cardinality(id=object.id, nbr_of_elements=nbr_of_elements)
         self._session.add(cardinality)
-        self._commit()
         return cardinality
 
     def get_cardinality(self, object):
@@ -49,11 +47,13 @@ class Database(object):
     def create_checksum(self, object, checksum):
         checksum = Checksum(id=object.id, checksum=checksum)
         self._session.add(checksum)
-        self._commit()
         return checksum
 
     def get_checksum(self, object):
         return self._session.query(Checksum).get(object.id)
+
+    def apply_changes(self):
+        self._commit()
 
     @staticmethod
     def get_connection_string(database_name):

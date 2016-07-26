@@ -23,7 +23,9 @@ class Object(object):
         return self._path
 
     def add_to_db(self, database):
-        return database.create_object(self.path, self.type, self.size)
+        obj = database.create_object(self.path, self.type, self.size)
+        database.apply_changes()
+        return obj
 
 
 class Directory(Object):

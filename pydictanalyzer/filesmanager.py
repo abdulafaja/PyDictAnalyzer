@@ -44,3 +44,4 @@ class FilesManager(object):
         """
         for file in self.files:
             file.add_to_db(database)
+        database.apply_changes()

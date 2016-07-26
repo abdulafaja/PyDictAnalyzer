@@ -12,6 +12,7 @@ class DatabaseTestCase(unittest.TestCase):
         self.obj_type = 't'
         self.obj_size = 15
         self.obj = self.db.create_object(path=self.obj_path, type=self.obj_type, size=self.obj_size)
+        self.db.apply_changes()
 
     def assertObjectEqual(self, object, another):
         self.assertEqual(object.id, another.id)
@@ -25,8 +26,9 @@ class DatabaseTestCase(unittest.TestCase):
     def test_create_object(self):
         session_obj = self.db.get_object_by_path(path=self.obj_path)
         self.assertObjectEqual(self.obj, session_obj)
+        self.db.create_object(self.obj_path, self.obj_type, self.obj_size)
 
-        self.assertRaises(DatabaseException, self.db.create_object, self.obj_path, self.obj_type, self.obj_size)
+        self.assertRaises(DatabaseException, self.db.apply_changes)
 
     def test_get_not_existed_object(self):
         path = '/another/test/path'
@@ -34,5 +36,7 @@ class DatabaseTestCase(unittest.TestCase):
 
     def test_create_cardinality(self):
         self.db.create_cardinality(object=self.obj, nbr_of_elements=5)
+        self.db.apply_changes()
+        self.db.create_cardinality(object=self.obj, nbr_of_elements=5)
 
-        self.assertRaises(DatabaseException, self.db.create_cardinality, self.obj, 5)
+        self.assertRaises(DatabaseException, self.db.apply_changes)
